@@ -8,7 +8,7 @@ typedef enum ErrorType{
 
 void error(ErrorType type, unsigned code, const char *str, ...);
 
-char *readFile(const char *path);
+char *readFile(const char *path, size_t *length);
 
 
 #endif

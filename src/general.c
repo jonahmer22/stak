@@ -20,7 +20,7 @@ void error(ErrorType type, unsigned code, const char *str, ...){
         exit(EXIT_FAILURE);
 }
 
-char *readFile(const char *path){
+char *readFile(const char *path, size_t *length){
     if(!path)   // actually the name is just non existent, but idk a better way to convey this
         error(ERROR_FATAL, 0x0001, "Impropper file name.");
 
@@ -33,12 +33,15 @@ char *readFile(const char *path){
     fseek(file, 0, SEEK_SET);
     long start = ftell(file);
 
-    long length = end - start;
-    char *buff = arenaAlloc(sizeof(char) * length);
+    long size = end - start;
+    char *buff = arenaAlloc(sizeof(char) * size);
     if(!buff)
-        error(ERROR_FATAL, 0x0003, "Could not allocate (%d) characters to read file.", (length/sizeof(char)));
+        error(ERROR_FATAL, 0x0003, "Could not allocate (%d) characters to read file.", (size / sizeof(char)));
 
-    fread(buff, sizeof(char), (length/sizeof(char)), file);
+    fread(buff, sizeof(char), (size / sizeof(char)), file);
+
+    if(length)
+        *length = (size_t)size;
     
     fclose(file);
     return buff;

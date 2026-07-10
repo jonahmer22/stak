@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "general.h"
+#include "tokenizer.h"
 #include "deps/arena/arena.h"
 
 int main(int argc, char **argv){
@@ -10,9 +11,10 @@ int main(int argc, char **argv){
     arenaInit();
 
     if(argc > 1){
-        char *src = readFile(argv[1]);
+        char *src = readFile(argv[1], NULL);
+        Token *tokens = tokenizeSrc(src, NULL);
 
-        puts(src);
+        printTokens(tokens);
 
         goto end;
     }
