@@ -59,6 +59,9 @@ Token *tokenizeSrc(char *src, size_t *length){
     size_t line = 1;
     // "maybe this macro will make it slighlty easier to tell what I am doing"
     #define SET_TOKEN_LINE list.tokens[list.used].line = line;
+
+    // just for shits and giggles I am adding this macro to
+    #define SET_TOKEN_TYPE(TYPE) list.tokens[list.used].type = (TYPE)
     while(*head != '\0'){
         switch(*head){
             case '\n':{
@@ -73,7 +76,7 @@ Token *tokenizeSrc(char *src, size_t *length){
             case '+':{
                 EXPAND_LIST_BY_ONE
                 SET_TOKEN_LINE
-                list.tokens[list.used].type = TOK_PLUS;
+                SET_TOKEN_TYPE(TOK_PLUS);
                 list.used++;
                 head++;
                 break;
@@ -92,11 +95,12 @@ Token *tokenizeSrc(char *src, size_t *length){
 
     // add on the end token
     EXPAND_LIST_BY_ONE
-    list.tokens[list.used].type = TOK_END;
+    SET_TOKEN_TYPE(TOK_END);
     list.used++;
 
     // done making the list so we can remove this
     #undef EXPAND_LIST_BY_ONE
+    #undef SET_TOKEN_TYPE   // same here
 
     // move the list to the arena
     Token *result = arenaAlloc(sizeof(Token) * list.used);

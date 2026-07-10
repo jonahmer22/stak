@@ -23,6 +23,6 @@ typedef struct Token{
 Token *tokenizeSrc(char *src, size_t *length);
 void printTokens(Token *tokens);
 
-// 
+// I was going to add something here, idk what it was anymore.
 
 #endif
