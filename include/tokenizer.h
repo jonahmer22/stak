@@ -15,6 +15,9 @@ typedef struct Token{
         // NOTE: I think I am going to reuse this field for both identifiers and actual strings
         char *str;
     } data;
+
+    // for errors and shit
+    size_t line;
 } Token;
 
 Token *tokenizeSrc(char *src, size_t *length);

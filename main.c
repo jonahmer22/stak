@@ -36,6 +36,11 @@ int main(int argc, char **argv){
         // i think the only way you get "bye\n\0" is by typing only that, the eof is right after anyway, idrc
         if(memcmp(line, "bye\n\0", 5) == 0)
             break;
+
+        // in the future might need to move this to a Token ** outside of the loop so I can have a history, it's all being saved anyway...
+        // not like the arena just magically disappears
+        Token *tokens = tokenizeSrc(line, NULL);
+        printTokens(tokens);
     }
 
     end:

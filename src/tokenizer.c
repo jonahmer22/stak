@@ -54,10 +54,25 @@ Token *tokenizeSrc(char *src, size_t *length){
     size_t tokensAmt = 0;
     // maybe this macro will make it slighlty easier to tell what I am doing
     #define EXPAND_LIST_BY_ONE tokenListEnsureSize(&list, ++tokensAmt);
+    
+    // for giving each token it's line
+    size_t line = 1;
+    // "maybe this macro will make it slighlty easier to tell what I am doing"
+    #define SET_TOKEN_LINE list.tokens[list.used].line = line;
     while(*head != '\0'){
         switch(*head){
+            case '\n':{
+                line++;
+            }
+            case ' ':
+            case '\t':
+            case '\r':
+            case '\v':{
+                head++;
+            }
             case '+':{
                 EXPAND_LIST_BY_ONE
+                SET_TOKEN_LINE
                 list.tokens[list.used].type = TOK_PLUS;
                 list.used++;
                 head++;
@@ -73,6 +88,7 @@ Token *tokenizeSrc(char *src, size_t *length){
             }
         }
     }
+    #undef SET_TOKEN_LINE
 
     // add on the end token
     EXPAND_LIST_BY_ONE
